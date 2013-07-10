@@ -12,19 +12,14 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_25">
+	<classpathentry kind="lib" path="C:/Users/cjurado2/misc jars/json-java.jar"/>
+	<classpathentry kind="lib" path="C:/Servers/liferay6.0.6/tomcat-6.0.29/lib/servlet-api.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/MyFaces2.0">
-		<attributes>
-			<attribute name="owner.project.facets" value="jst.jsf;#system#"/>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/cjurado2/misc jars/json-java.jar"/>
-	<classpathentry kind="lib" path="C:/Servers/liferay6.0.6/tomcat-6.0.29/lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="/liferay-portal-src-6.0.6-20110225/liferay-portal-src-6.0.6/lib/development/jsf-api.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/java_nexus_client_cvrg"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/portal-trunk"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
