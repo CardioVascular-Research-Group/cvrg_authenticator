@@ -12,7 +12,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import edu.jhu.cvrg.utilities.authentication.AuthenticationMethod;
 import edu.jhu.cvrg.utilities.authentication.MainAuthenticator;
 
-public class GlobusRESTAuthenticator implements Authenticator{
+public class GlobusNexusAuthenticator implements Authenticator{
 
 	@Override
 	public int authenticateByEmailAddress(long companyId, String emailAddress,
