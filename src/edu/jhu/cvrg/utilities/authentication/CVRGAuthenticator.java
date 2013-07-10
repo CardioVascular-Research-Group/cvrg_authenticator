@@ -1,4 +1,7 @@
 package edu.jhu.cvrg.utilities.authentication;
+
+import javax.servlet.http.HttpServletRequest;
+
 /*
 Copyright 2011 Johns Hopkins University Institute for Computational Medicine
 
@@ -41,4 +44,9 @@ public abstract class CVRGAuthenticator {
 	public abstract String getUserInstitution();
 	
 	public abstract String getUserOrganization();
+
+	public boolean logMeIn(HttpServletRequest req) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

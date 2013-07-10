@@ -19,11 +19,6 @@ package edu.jhu.cvrg.utilities.authentication;
  * @author Chris Jurado
  * 
  */
-import java.io.IOException;
-
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
-
 import org.openid4java.discovery.DiscoveryInformation;
 import org.openid4java.message.AuthRequest;
 
@@ -60,17 +55,17 @@ public class OpenIdAuthenticator extends CVRGAuthenticator {
 			DiscoveryInformation discoveryInformation = OpenIdUtility.performDiscovery(identifier);
 			AuthRequest authRequest = OpenIdUtility.createOpenIdAuthRequest(discoveryInformation, returnToUrl);
 
-			try {
-				HttpServletResponse response = (HttpServletResponse) FacesContext
-						.getCurrentInstance().getExternalContext()
-						.getResponse();
-				response.sendRedirect(authRequest.getDestinationUrl(true));
-			} catch (IOException e) {
-				System.out.println("oops");
-				e.printStackTrace();
-				return success;
-			}
-			
+//			try {
+//				HttpServletResponse response = (HttpServletResponse) FacesContext
+//						.getCurrentInstance().getExternalContext()
+//						.getResponse();
+//				response.sendRedirect(authRequest.getDestinationUrl(true));
+//			} catch (IOException e) {
+//				System.out.println("oops");
+//				e.printStackTrace();
+//				return success;
+//			}
+//			
 			System.out.println("SUCCESS");
 			
 			success = true;
@@ -95,15 +90,15 @@ public class OpenIdAuthenticator extends CVRGAuthenticator {
 
 		if (!logoutUrl.isEmpty() && logoutUrl != null) {
 
-			try {
-				HttpServletResponse response = (HttpServletResponse) FacesContext
-						.getCurrentInstance().getExternalContext()
-						.getResponse();
-				response.sendRedirect(this.logoutUrl);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return success;
-			}
+//			try {
+//				HttpServletResponse response = (HttpServletResponse) FacesContext
+//						.getCurrentInstance().getExternalContext()
+//						.getResponse();
+//				response.sendRedirect(this.logoutUrl);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//				return success;
+//			}
 			
 			success = true;
 		}

@@ -39,6 +39,8 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
+import edu.jhu.cvrg.nexus.GlobusOnlineRestClient;
+
 public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 	
 	private static String GO_HOST = "";
@@ -46,7 +48,7 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 	static org.apache.log4j.Logger logger = Logger.getLogger(GlobusRESTAuthenticator.class);
 	private String username, password;
 	
-	private String userEmail, userFullname, userFirstname, userLastname, userOrganization, userInstitution;
+	private String userEmail, userFullname, userOrganization, userInstitution;
 
 	GlobusRESTAuthenticator(String username, String password){
 		this.username = username;
@@ -86,67 +88,86 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 		
 		boolean success = false;
 		
-		if(GO_HOST.equals("missing")){
-			logger.error("Host URL Configuration missing.");
-			return success;
+		GlobusOnlineRestClient client = new GlobusOnlineRestClient();
+		success = client.usernamePasswordLogin(username, password);
+		userFullname = client.getCurrentUserFullName();
+		userEmail = client.getCurrentUserEmail();
+		
+		if(success){
+			System.out.println("Authentication succeeded for user " + userFullname);
+		}
+		else{
+			System.out.println("Authentication failed, because you suck.");
 		}
 		
-		 try {
-		        SSLContext sc = SSLContext.getInstance("SSL");
-		        sc.init(null, trustAllCerts, new SecureRandom());
-		        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-		        
-		        URL url = new URL("https://" + GO_HOST + "/authenticate"); 
-		        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection(); 
-		        connection.setDoOutput(true); 
-		        connection.setInstanceFollowRedirects(false); 
-		        connection.setRequestMethod("POST"); 
-		        connection.setRequestProperty("Content-Type", "application/json"); 
-		        connection.setRequestProperty("Accept", "application/json"); 
-		        
-		        OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-		        out.write("{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}");
-		        out.close();
-
-		        if(connection.getResponseCode() == 203){
-		        	logger.error("Access is denied.  Invalid credentials.");
-		        }
-		        if(connection.getResponseCode() == 204){
-		        	logger.error("Authentciation URL invalid.");
-		        }      
-		        
-		        if (connection.getResponseCode() != 200){
-		        	logger.error("Unable to Authenticate.  Error code " + connection.getResponseCode());
-		        }else {        	
-		        	logger.info("Valid GO login details");
-		        	
-		        	success = true;
-			        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));		
-			        String decodedString = in.readLine();
-			        
-			        System.out.println("Response data is " + decodedString);
-			        
-			        JSONObject json = new JSONObject(decodedString);
-			        userFullname = (String)json.get("fullname");
-			        userEmail = (String)json.get("email");
-			        int index = userFullname.indexOf(" ");
-			        if (index > 0){
-			        	userFirstname = userFullname.substring(0,index);
-			        	userLastname = userFullname.substring(index+1);
-			        	userInstitution = (String)json.get("institution");
-			        	userOrganization = (String)json.get("organization");
-			        }
-			        json.put("firstname", userFirstname);
-			        json.put("lastname", userLastname);
-//			        return json;
-		        }
-		        connection.disconnect(); 
-		    } catch (Exception e) {
-		    	System.out.println(e);
-		        return success;
-		    }
-		    return success;   
+		return success;
 	}
+	
+//	public boolean authenticateOld(String username, String password){
+//		
+//		boolean success = false;
+//		
+//		if(GO_HOST.equals("missing")){
+//			logger.error("Host URL Configuration missing.");
+//			return success;
+//		}
+//		
+//		 try {
+//		        SSLContext sc = SSLContext.getInstance("SSL");
+//		        sc.init(null, trustAllCerts, new SecureRandom());
+//		        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+//		        
+//		        URL url = new URL("https://" + GO_HOST + "/authenticate"); 
+//		        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection(); 
+//		        connection.setDoOutput(true); 
+//		        connection.setInstanceFollowRedirects(false); 
+//		        connection.setRequestMethod("POST"); 
+//		        connection.setRequestProperty("Content-Type", "application/json"); 
+//		        connection.setRequestProperty("Accept", "application/json"); 
+//		        
+//		        OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+//		        out.write("{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}");
+//		        out.close();
+//
+//		        if(connection.getResponseCode() == 203){
+//		        	logger.error("Access is denied.  Invalid credentials.");
+//		        }
+//		        if(connection.getResponseCode() == 204){
+//		        	logger.error("Authentciation URL invalid.");
+//		        }      
+//		        
+//		        if (connection.getResponseCode() != 200){
+//		        	logger.error("Unable to Authenticate.  Error code " + connection.getResponseCode());
+//		        }else {        	
+//		        	logger.info("Valid GO login details");
+//		        	
+//		        	success = true;
+//			        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));		
+//			        String decodedString = in.readLine();
+//			        
+//			        System.out.println("Response data is " + decodedString);
+//			        
+//			        JSONObject json = new JSONObject(decodedString);
+//			        userFullname = (String)json.get("fullname");
+//			        userEmail = (String)json.get("email");
+//			        int index = userFullname.indexOf(" ");
+//			        if (index > 0){
+////			        	userFirstname = userFullname.substring(0,index);
+////			        	userLastname = userFullname.substring(index+1);
+//			        	userInstitution = (String)json.get("institution");
+//			        	userOrganization = (String)json.get("organization");
+//			        }
+////			        json.put("firstname", userFirstname);
+////			        json.put("lastname", userLastname);
+////			        return json;
+//		        }
+//		        connection.disconnect(); 
+//		    } catch (Exception e) {
+//		    	System.out.println(e);
+//		        return success;
+//		    }
+//		    return success;   
+//	}
 	
 	// Create a trust manager that does not validate certificate chains
 	static TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
@@ -175,15 +196,19 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 	}
 
 	public String getUserFirstname() {
-		return userFirstname;
+        int index = userFullname.indexOf(" ");
+        if (index > 0){
+        	return userFullname.substring(0,index);
+        }
+        return "";
 	}
 
 	public String getUserLastname() {
-		return userLastname;
-	}
-
-	public void setUserLastname(String userLastname) {
-		this.userLastname = userLastname;
+        int index = userFullname.indexOf(" ");
+        if (index > 0){
+        	return userFullname.substring(index+1);
+        }
+        return "";
 	}
 
 	@Override
@@ -197,7 +222,4 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-
 }
