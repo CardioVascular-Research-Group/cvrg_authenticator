@@ -28,6 +28,7 @@ import java.util.Properties;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
@@ -147,5 +148,11 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 	public String getUserOrganization() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean logMeIn(HttpServletRequest req) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
