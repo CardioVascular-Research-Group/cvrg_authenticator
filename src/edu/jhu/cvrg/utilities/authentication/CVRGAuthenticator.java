@@ -45,8 +45,5 @@ public abstract class CVRGAuthenticator {
 	
 	public abstract String getUserOrganization();
 
-	public boolean logMeIn(HttpServletRequest req) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public abstract boolean logMeIn(HttpServletRequest req);
 }

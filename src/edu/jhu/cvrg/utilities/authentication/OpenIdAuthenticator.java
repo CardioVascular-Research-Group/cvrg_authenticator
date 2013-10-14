@@ -1,5 +1,4 @@
 package edu.jhu.cvrg.utilities.authentication;
-
 /*
  Copyright 2012 Johns Hopkins University Institute for Computational Medicine
 
@@ -19,6 +18,8 @@ package edu.jhu.cvrg.utilities.authentication;
  * @author Chris Jurado
  * 
  */
+import javax.servlet.http.HttpServletRequest;
+
 import org.openid4java.discovery.DiscoveryInformation;
 import org.openid4java.message.AuthRequest;
 
@@ -152,6 +153,12 @@ public class OpenIdAuthenticator extends CVRGAuthenticator {
 	public String getUserOrganization() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean logMeIn(HttpServletRequest req) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
