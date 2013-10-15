@@ -43,9 +43,7 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 	
 	private String userEmail, userFullname, userOrganization, userInstitution;
 
-	GlobusRESTAuthenticator(String username, String password){
-		this.username = username;
-		this.password = password;
+	private void loadDefaultURL(){
 		
 		Properties props = new Properties();
 		
@@ -62,7 +60,18 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
+	}
+	
+	GlobusRESTAuthenticator(String[] args){
+		this.username = args[0];
+		this.password = args[1];
 		
+		if(args.length == 2){
+			loadDefaultURL();
+		}
+		else{
+			GO_HOST=args[2];
+		}
 	}
 
 	@Override
