@@ -31,21 +31,31 @@ import javax.net.ssl.X509TrustManager;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-
-import edu.jhu.cvrg.nexus.GlobusOnlineRestClient;
+import org.globusonline.nexus.NexusClient;
+import org.globusonline.nexus.exception.NexusClientException;
 
 public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 	
 	private static String GO_HOST = "";
+	private static String community = "";
 
 	static org.apache.log4j.Logger logger = Logger.getLogger(GlobusRESTAuthenticator.class);
 	private String username, password;
 	
 	private String userEmail, userFullname, userOrganization, userInstitution;
-
+	
+	private void loadDefaultCommunity(){
+		community = loadDefaultValue("globus.community");
+	}
+	
 	private void loadDefaultURL(){
+		GO_HOST = loadDefaultValue("globus.url");
+	}
+
+	private String loadDefaultValue(String key){
 		
 		Properties props = new Properties();
+		String value = "";
 		
 	     try {
 	            String fileName = "/resources/authenticator.config";            
@@ -53,24 +63,33 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 
 	            props.load(stream);
 
-	            GO_HOST = (props.getProperty("globus.url", "missing"));
+	            value = props.getProperty(key, "missing");
 	        } catch (FileNotFoundException e) {
 	        	logger.error("authenticator.config not found.");
 	            e.printStackTrace();
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
+	     return value;
 	}
 	
-	GlobusRESTAuthenticator(String[] args){
+	public GlobusRESTAuthenticator(String[] args){
 		this.username = args[0];
 		this.password = args[1];
 		
 		if(args.length == 2){
 			loadDefaultURL();
+			loadDefaultCommunity();
 		}
 		else{
-			GO_HOST=args[2];
+			GO_HOST = args[2];
+		}
+		
+		if(args.length == 3){
+			loadDefaultCommunity();
+		}
+		else {
+			community = args[3];
 		}
 	}
 
@@ -89,17 +108,22 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 	public boolean authenticate(String username, String password){
 		
 		boolean success = false;
-		
-		GlobusOnlineRestClient client = new GlobusOnlineRestClient();
-		success = client.usernamePasswordLogin(username, password);
-		userFullname = client.getCurrentUserFullName();
-		userEmail = client.getCurrentUserEmail();
-		
+		NexusClient client;
+		try {
+			client = new NexusClient(GO_HOST, community);
+			success = client.authenticateUserPassword(username, password);
+			userFullname = client.getUserFullName();
+			userEmail = client.getUserEmail();
+		} catch (NexusClientException e) {
+			logger.error("NexusClient failure.");
+			e.printStackTrace();
+		}
+
 		if(success){
-			System.out.println("Authentication succeeded for user " + userFullname);
+			logger.info("Authentication succeeded for user " + userFullname);
 		}
 		else{
-			System.out.println("Authentication failed, because you suck.");
+			logger.info("Authentication failed for username " + username);
 		}
 		
 		return success;
