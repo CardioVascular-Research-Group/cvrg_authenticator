@@ -29,9 +29,9 @@
         </javac>
     </target>
 
-    <target name="jar">
+    <target name="jar" depends="compile">
         <mkdir dir="build/jar"/>
-        <jar destfile="/opt/liferay/ext-jars/cvrg-authenticator.jar" basedir="build/classes">
+        <jar destfile="/opt/liferay/utility-jars/cvrg-authenticator.jar" basedir="build/classes">
         </jar>
     </target>
 
