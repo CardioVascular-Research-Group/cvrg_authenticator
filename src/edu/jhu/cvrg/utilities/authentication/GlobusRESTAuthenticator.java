@@ -82,15 +82,16 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 			loadDefaultURL();
 			loadDefaultCommunity();
 		}
-		else{
+		
+		if (args.length >= 3){
 			GO_HOST = args[2];
 		}
 		
-		if(args.length > 3){
-			loadDefaultCommunity();
+		if(args.length >= 4){
+			community = args[3];
 		}
 		else {
-			community = args[3];
+			loadDefaultCommunity();	
 		}
 	}
 
