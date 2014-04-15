@@ -38,6 +38,7 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 	
 	private static String GO_HOST = "";
 	private static String community = "";
+	private static String INTERNAL_FILE_PATH = "/resources/authenticator.config";
 
 	static org.apache.log4j.Logger logger = Logger.getLogger(GlobusRESTAuthenticator.class);
 	private String username, password;
@@ -58,7 +59,7 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 		String value = "";
 		
 	     try {
-	            String fileName = "/resources/authenticator.config";            
+	            String fileName = INTERNAL_FILE_PATH;            
 	            InputStream stream = GlobusRESTAuthenticator.class.getResourceAsStream(fileName);
 
 	            props.load(stream);
@@ -85,7 +86,7 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 			GO_HOST = args[2];
 		}
 		
-		if(args.length == 3){
+		if(args.length > 3){
 			loadDefaultCommunity();
 		}
 		else {
