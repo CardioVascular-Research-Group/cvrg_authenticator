@@ -112,7 +112,9 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 		NexusClient client;
 		try {
 			client = new NexusClient(GO_HOST, community);
+			System.out.println("Authenticating against URL " + GO_HOST + " and community " + community);
 			success = client.authenticateUserPassword(username, password);
+			System.out.println("Result is successful?  " + success);
 			userFullname = client.getUserFullName();
 			userEmail = client.getUserEmail();
 		} catch (NexusClientException e) {
