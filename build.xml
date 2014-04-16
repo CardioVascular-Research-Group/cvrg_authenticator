@@ -10,6 +10,9 @@
 		<fileset dir="/opt/liferay/waveform3/tomcat-7.0.27/lib/ext">
 			<include name="*.jar"/>
 		</fileset>
+		<fileset dir="/opt/liferay/waveform3/tomcat-7.0.27/webapps/ROOT/WEB-INF/lib">
+			<include name="*.jar"/>
+		</fileset>
 	</path>
 	
 	<target name="all">

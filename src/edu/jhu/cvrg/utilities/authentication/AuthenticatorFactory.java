@@ -30,7 +30,7 @@ public class AuthenticatorFactory {
 			//Arguments are (identifier, return URL)
 			return new OpenIdAuthenticator(args[0], args[1]);
 		case GLOBUS_REST:
-			//Arguments are (username, password)
+			//Arguments are (username, password, url(optional), community(optional))
 			return new GlobusRESTAuthenticator(args);
 		}
 		

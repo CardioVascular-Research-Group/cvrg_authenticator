@@ -78,20 +78,18 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 		this.username = args[0];
 		this.password = args[1];
 		
-		if(args.length == 2){
+		if(args[2].equals("")){
 			loadDefaultURL();
-			loadDefaultCommunity();
 		}
-		
-		if (args.length >= 3){
+		else{
 			GO_HOST = args[2];
 		}
 		
-		if(args.length >= 4){
-			community = args[3];
+		if(args[3].equals("")){
+			loadDefaultCommunity();	
 		}
 		else {
-			loadDefaultCommunity();	
+			community = args[3];
 		}
 	}
 
@@ -102,7 +100,6 @@ public class GlobusRESTAuthenticator extends CVRGAuthenticator{
 
 	@Override
 	public boolean logMeOut() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
