@@ -62,7 +62,7 @@ public class OpenIdUtility {
 				consumerManager.setAssociations(new InMemoryConsumerAssociationStore());
 				consumerManager.setNonceVerifier(new InMemoryNonceVerifier(10000));
 			}
-		} catch (ConsumerException e) {
+		} catch (Exception e) {
 			String message = "Exception creating ConsumerManager!";
 			log.error(message, e);
 			throw new RuntimeException(message, e);
